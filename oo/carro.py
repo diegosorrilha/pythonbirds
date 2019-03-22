@@ -96,23 +96,22 @@ Exemplo:
 
 
 class Motor:
-    def __init__(self, velocidade=0):
-        self.velocidade = velocidade
+    def __init__(self):
+        self.velocidade = 0
 
     def acelerar(self):
         self.velocidade += 1
 
     def frear(self):
-        if self.velocidade < 2:
-            self.velocidade = 0
-        else:
-            self.velocidade = self.velocidade - 2
+        self.velocidade -= 2
+        self.velocidade = max(0, self.velocidade)
 
 
+DIRECAO = ['Norte', 'Leste', 'Sul', 'Oeste']
 class Direcao:
-    def __init__(self, direcao=['Norte', 'Leste', 'Sul', 'Oeste'], valor='Norte'):
-        self.direcao = direcao
-        self.valor = valor
+    def __init__(self):
+        self.direcao = DIRECAO
+        self.valor = DIRECAO[0]
 
 
     def girar_a_direita(self):
@@ -127,19 +126,17 @@ class Direcao:
 
 class Carro:
     def __init__(self, direcao, motor):
-        self.direcao = Direcao()
-        self.motor = Motor()
+        self.direcao = direcao
+        self.motor = motor
 
     def calcular_velocidade(self):
         return self.motor.velocidade
 
     def acelerar(self):
         self.motor.acelerar()
-        return self.motor.velocidade
 
     def frear(self):
         self.motor.frear()
-        return self.motor.velocidade
 
     def calcular_direcao(self):
         return self.direcao.valor
@@ -149,66 +146,3 @@ class Carro:
 
     def girar_a_esquerda(self):
         self.direcao.girar_a_esquerda()
-
-
-if __name__ == '__main__':
-    # Testando motor
-    motor = Motor()
-    print(motor.velocidade) # 0
-    motor.acelerar()
-    print(motor.velocidade) # 1
-    motor.acelerar()
-    print(motor.velocidade) # 2
-    motor.acelerar()
-    print(motor.velocidade) # 3
-    print('-------')
-    motor.frear()
-    print(motor.velocidade) # 1
-    motor.frear()
-    print(motor.velocidade) # 0
-
-    # Testando Direcao
-    direcao = Direcao()
-    print(direcao.valor) # Norte
-    direcao.girar_a_direita()
-    print(direcao.valor) # Leste
-    direcao.girar_a_direita()
-    print(direcao.valor) # Sul
-    direcao.girar_a_direita()
-    print(direcao.valor)  # Oeste
-    direcao.girar_a_direita()
-    print(direcao.valor)  # Norte
-
-    print('======== esquerda')
-    direcao.girar_a_esquerda()
-    print(direcao.valor)  # Oeste
-    direcao.girar_a_esquerda()
-    print(direcao.valor)  # Sul
-    direcao.girar_a_esquerda()
-    print(direcao.valor)  # Leste
-    direcao.girar_a_esquerda()
-    print(direcao.valor)  # Norte
-    direcao.girar_a_esquerda()
-    print(direcao.valor)  # Oeste
-
-    print('==== CARRO ====')
-    # Testando Carro
-    carro = Carro(direcao, motor)
-    print(carro.calcular_velocidade()) # 0
-    carro.acelerar()
-    print(carro.calcular_velocidade())  # 1
-    carro.acelerar()
-    print(carro.calcular_velocidade())  # 1
-    carro.frear()
-    print(carro.calcular_velocidade())  # 0
-
-    print(carro.calcular_direcao()) # Norte
-
-    carro.girar_a_direita()
-    print(carro.calcular_direcao()) # Leste
-
-    carro.girar_a_esquerda()
-    print(carro.calcular_direcao()) # Norte
-
-    carro.girar_a_esquerda()
-    print(carro.calcular_direcao()) # Oeste
